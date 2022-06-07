@@ -12,7 +12,7 @@ If the answer is yes because the system will continue running and the service is
 
 Kafka's workhorse concept is the Partition. An In Sync Replica (ISR) is the copy of that Partition's data, where it could resume the responsibilities of the Partition leader and be the actual Partition instead of an ISR.
 
-You can delete an ISR's files off disk, but Kafka will have errors and not know what to do. Deleting an entire node will only result in failures of any Partitions that don't have any ISRs left. This is the critical point. ISRs must exist for fault tolerance and recovery. If Kafka can't figure out how to have the minimum required ISRs, it can't accept new messages. It won't lose data, but Producers might. Now we have to think about Producers in addition to Kafka. Well, one thing at a time.
+We can delete an ISR's files off disk, but Kafka will have errors and not know what to do. Deleting an entire node will only result in failures of any Partitions that don't have any ISRs left. This is the critical point. ISRs must exist for fault tolerance and recovery. If Kafka can't figure out how to have the minimum required ISRs, it can't accept new messages. It won't lose data, but Producers might. Now we have to think about Producers in addition to Kafka. Well, one thing at a time.
 
 ## Producers too?
 
@@ -30,7 +30,7 @@ Being able to lose a broker is a good thing. This does not prevent a user from d
 
 Which of these things is our responsibility? At a certain point, users must know how to use Kafka as good citizens in the shared system. ACLs will reduce the responsibility we have to keep in the Kafka system itself and how much we can push to individual topic owners. We can also offer some additional safety nets if we have time to tool them, such as being able to snapshot disk states, or have a backup of configuration. Gitops flows enable that configuration backup/history naturally, and we recommend them very strongly.
 
-Snapshots of disk states are not helpful in a large system with many topics with different owners. Resetting all state of all topics to even an hourly snapshot is throwing away a lot of data. At scale, this is very untenable. Kafka clusters can have Petabytes of data running through them fairly regularly. Having snapshots to prevent data loss of one kind is ensuring data loss of other kinds as complexity is compounded. Do you restore to a shadow cluster and copy over files? Re-produce the snapshot onward to the bad message?
+Snapshots of disk states are not helpful in a large system with many topics with different owners. Resetting all state of all topics to even an hourly snapshot is throwing away a lot of data. At scale, this is very untenable. Kafka clusters can have Petabytes of data running through them fairly regularly. Having snapshots to prevent data loss of one kind is ensuring data loss of other kinds as complexity is compounded. Do we restore to a shadow cluster and copy over files? Re-produce the snapshot onward to the bad message?
 
 This is not a happy path. It is far better for everyone if responsibility for data integrity is on Producers and Consumers. Error handling is incredibly important for any Kafka user, and not the server side responsibility. Bad log messages for instance can happen because of active memory corruption on a system. This is not possible to prevent on Producers. It is worth noting that this bad message is also good signal. An error could simply ignore this message and log it as an exception to something like Sentry for someone to handle. Then no complicated error handling tooling needs to be created on Producers nor do we need bespoke tooling to handle excising a bad message. Again, Kafka is meant for scalability. Scalability means error handling live.
 
@@ -40,9 +40,9 @@ It is not an uncommon request to get Kafka users asking about dead letter queues
 
 If a dead letter queue is requested, what happens when the error happens on the dead letter queue Consumer? Does progress halt there? Do we need a dead letter queue for the dead letter queue? We think the answer is obviously no, but we've also seen this done more than once by very different groups.
 
-Our advice is to never dead letter queue, and if you need to reprocess something, capture the errors in a different context. This could even look very much like a dead letter queue, but it should in actuality be more like a Sentry style capturing mechanism where errors can be handled out of band. This means that we must have the ability to handle a message days late all while handling all the other messages live. Some will say this isn't tenable, but this is necessary with a dead letter queue as well.
+Our advice is to never dead letter queue, and if we need to reprocess something, capture the errors in a different context. This could even look very much like a dead letter queue, but it should in actuality be more like a Sentry style capturing mechanism where errors can be handled out of band. This means that we must have the ability to handle a message days late all while handling all the other messages live. Some will say this isn't tenable, but this is necessary with a dead letter queue as well.
 
-At the end of the day, either every message needs to be processed within a certain time, or they can be safely dropped. That's not a problem Kafka can help solve, that is a business logic problem and the logistics do not change no matter your technology choice. That's just messaging.
+At the end of the day, either every message needs to be processed within a certain time, or they can be safely dropped. That's not a problem Kafka can help solve, that is a business logic problem and the logistics do not change no matter our technology choice. That's just messaging.
 
 ## Best case redundancy
 
