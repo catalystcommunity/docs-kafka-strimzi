@@ -8,7 +8,7 @@ Here we will discuss the extra trade-offs that come with moving into multiple Ka
 
 It's important to understand that all multiple cluster kafka deployments are in a very real way simply single clusters glued together in a way that they are unaware of each other.
 
-Mirror Maker and Mirror Maker 2 can both make data redundant on multiple clusters. It does this, in all cases, by having a normal Consumer client read from TopicA in ClusterA, and Produce to TopicA in ClusterB. Just because they are both named TopicA does not mean they are the same topic. There's no guarantees about ordering data (you can arrange it so that this is largely preserved, but this is precarious).
+[Mirror Maker](https://strimzi.io/docs/operators/0.24.0/full/using.html#assembly-deployment-configuration-kafka-mirror-maker-str) and [Mirror Maker 2](https://strimzi.io/blog/2020/03/30/introducing-mirrormaker2/) can both make data redundant on multiple clusters. It does this, in all cases, by having a normal Consumer client read from TopicA in ClusterA, and Produce to TopicA in ClusterB. Just because they are both named TopicA does not mean they are the same topic. There's no guarantees about ordering data (you can arrange it so that this is largely preserved, but this is precarious).
 
 It is much easier to make consumers that process messages in idempotent ways rather than trying to enforce ordering. This is true before we add a second Kafka cluster. If we don't enforce ordering, multiple clusters is much more approachable. Just remember this disconnect where it's really just multiple single clusters with little help from tools.
 

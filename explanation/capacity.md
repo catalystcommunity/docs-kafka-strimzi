@@ -40,7 +40,7 @@ We don't recommend going below 16 GB RAM and 4 CPU cores for Brokers. Even if th
 
 ## Monitoring Usage
 
-The most important part of capacity planning is that it is done continuously. There is no capacity today that will not be wrong tomorrow. Luckily, this is enabled very easily by what we should be doing already, monitoring!
+The most important part of capacity planning is that it is done continuously. There is no capacity today that will not be wrong tomorrow. Luckily, this is enabled very easily by what we should be doing already, [monitoring!](https://computingforgeeks.com/monitor-apache-kafka-with-prometheus-and-grafana/)
 
 Keep a track record of metrics on a variety of pieces of Kafka's performance. Keep track of lagging Consumer groups, Partitions, ISRs, storage capacity, CPU and Memory usage, and anything else you can measure. If using Prometheus metrics, you want to keep in mind the cardinality of labels you add so you don't lose monitoring capabilities as labels explode, but measure as much as possible within that constraint. Even if something isn't a core metric, it can help paint a picture of why the core metric behaves the way it does. For example, your Consumer lag may happen because open file handles has reached your OS limit, so reads are having contention on file handles but you won't see that in CPU or Memory stats, and not likely on storage capacity.
 

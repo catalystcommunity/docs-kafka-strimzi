@@ -12,7 +12,7 @@ If the answer is yes because the system will continue running and the service is
 
 Kafka's workhorse concept is the Partition. An In Sync Replica (ISR) is the copy of that Partition's data, where it could resume the responsibilities of the Partition leader and be the actual Partition instead of an ISR.
 
-You can delete an ISR's files off disk, but Kafka will have errors and not know what to do. Deleting an entire node will only result in failures of any Partitions that don't have any ISRs left. This is the critical point. ISRs must exist for fault tolerance and recovery. If Kafka can't figure out how to have the minimum required ISRs, it can't accept new messages. It won't lost data, but Producers might. Now we have to think about Producers in addition to Kafka. Well, one thing at a time.
+You can delete an ISR's files off disk, but Kafka will have errors and not know what to do. Deleting an entire node will only result in failures of any Partitions that don't have any ISRs left. This is the critical point. ISRs must exist for fault tolerance and recovery. If Kafka can't figure out how to have the minimum required ISRs, it can't accept new messages. It won't lose data, but Producers might. Now we have to think about Producers in addition to Kafka. Well, one thing at a time.
 
 ## Producers too?
 
@@ -36,11 +36,11 @@ This is not a happy path. It is far better for everyone if responsibility for da
 
 ## What about dead letter queues?
 
-It is not an uncommon request to get Kafka users asking about dead letter queues. This is a good sign of two things. First, Kafka is being used as a queue, which is very bad. Kafka is a parallelized append-only log, not a work queue. Nothing can change this. Consumer offsets can get reset in a variety of scenarios. Will items in the topic be reprocessed or do they expect at-most-once semantics? Second, this problem never ends, so this is a time for conversation about properly engineering a Kafka use case.
+It is not an uncommon request to get Kafka users asking about dead letter queues. This is a strong indicator of two things. First, Kafka is being used as a queue, which is very bad. Kafka is a parallelized append-only log, not a work queue. Nothing can change this. Consumer offsets can get reset in a variety of scenarios. Will items in the topic be reprocessed or do they expect at-most-once semantics? Second, this problem never ends, so this is a time for conversation about properly engineering a Kafka use case.
 
 If a dead letter queue is requested, what happens when the error happens on the dead letter queue Consumer? Does progress halt there? Do we need a dead letter queue for the dead letter queue? We think the answer is obviously no, but we've also seen this done more than once by very different groups.
 
-Our advice is to never dead letter queue, and if you need to reprocess something, capture the errors in a different context. This could even look very much like a dead letter queue, but it should in actuality be more like a Sentry style capturing mechanism where errors can be handled out of band. This means that the ability to handle a message days late all while handling all the other messages live. Some will say this isn't tenable, but this is necessary with a dead letter queue as well.
+Our advice is to never dead letter queue, and if you need to reprocess something, capture the errors in a different context. This could even look very much like a dead letter queue, but it should in actuality be more like a Sentry style capturing mechanism where errors can be handled out of band. This means that we must have the ability to handle a message days late all while handling all the other messages live. Some will say this isn't tenable, but this is necessary with a dead letter queue as well.
 
 At the end of the day, either every message needs to be processed within a certain time, or they can be safely dropped. That's not a problem Kafka can help solve, that is a business logic problem and the logistics do not change no matter your technology choice. That's just messaging.
 
