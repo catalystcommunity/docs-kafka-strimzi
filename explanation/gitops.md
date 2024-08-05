@@ -6,7 +6,7 @@ Like [Operators](./operators.md) we are not going to go in depth in the concept 
 
 Gitops is just the concept of using a git repository as the entry point for all operational changes. This means you have events based on the changes you make to the repo. Perhaps this is an event noting that someone created a pull request from a feature branch to main. Sometimes that means after a merge some actions need to be taken, like re-applying a bunch of yaml to a kubernetes cluster.
 
-It also applies to things like [ArgoCD](https://github.com/catalystsquad/documentation/blob/main/explanation/mvkube.md#how-it-is-organized) which can watch repositories and act on changes in a pull-based manner. This can be very affective at decoupling infrastructure and platforms and services from git pipelines.
+It also applies to things like [ArgoCD](https://github.com/catalystcommunity/documentation/blob/main/explanation/mvkube.md#how-it-is-organized) which can watch repositories and act on changes in a pull-based manner. This can be very affective at decoupling infrastructure and platforms and services from git pipelines.
 
 Thus, when you wish to add a topic or change a user ACL or expand brokers or any other such thing, you do so with git.
 

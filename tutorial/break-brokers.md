@@ -4,7 +4,7 @@ This tutorial, will take a multi-broker cluster and break one of those brokers t
 
 ## Install Requirements
 
-For this work, you'll need some tools installed locally. If you don't already have a functional Kafka cluster in a Kubernetes cluster, we have [an example guide](https://github.com/catalystsquad/example-kafka-client) that works if you have enough RAM to run it all (about 12GB free). The tools needed are:
+For this work, you'll need some tools installed locally. If you don't already have a functional Kafka cluster in a Kubernetes cluster, we have [an example guide](https://github.com/catalystcommunity/example-kafka-client) that works if you have enough RAM to run it all (about 12GB free). The tools needed are:
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) (or this comes with many other tools like several cloud CLI providers)
 - A Kubernetes cluster (see guide mentioned before) capable of running 3 Zookeeper pods and 3+ Kafka broker pods.
@@ -14,7 +14,7 @@ For this work, you'll need some tools installed locally. If you don't already ha
 - [jq](https://stedolan.github.io/jq/) is also just something you should have for working with kubernetes anyway
 - [yq](https://github.com/mikefarah/yq#install) for similar reasons, though it is not used currently directly in this or the example repo.
 
-Note: We highly recommend using the [example kafka client](https://github.com/catalystsquad/example-kafka-client) unless you're comfortable adjusting commands to match your kafka cluster including keystore and user/topic management. We would have a separate terminal window open to the root of a clone of that repo. All our commands are based on that example, so adjust as necessary if you don't use it.
+Note: We highly recommend using the [example kafka client](https://github.com/catalystcommunity/example-kafka-client) unless you're comfortable adjusting commands to match your kafka cluster including keystore and user/topic management. We would have a separate terminal window open to the root of a clone of that repo. All our commands are based on that example, so adjust as necessary if you don't use it.
 
 ## Producing Messages
 
